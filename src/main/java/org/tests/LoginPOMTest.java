@@ -10,31 +10,23 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class LoginPOMTest {
+public class LoginPOMTest extends BaseTest{
 
-    WebDriver driver;
-    LoginPage loginpage;
+    LoginPage loginPage;
 
     @BeforeMethod
-    public void setup(){
-        driver = new ChromeDriver();
+    public void navigateToLogin(){
         driver.get("https://the-internet.herokuapp.com/login");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        loginpage = new LoginPage(driver);
-    }
-
-    @AfterMethod
-    public void tearDown(){
-        driver.quit();
+        loginPage = new LoginPage(driver);
     }
 
     @Test
     public void loginValidTest() throws InterruptedException {
-        loginpage.enterUsername("tomsmith");
-        loginpage.enterPassword(("SuperSecretPassword!"));
-        loginpage.clickLogin();
+        loginPage.enterUsername("tomsmith");
+        loginPage.enterPassword(("SuperSecretPassword!"));
+        loginPage.clickLogin();
         Thread.sleep(2000);
-        String messsage = loginpage.getFlashMessage();
+        String messsage = loginPage.getFlashMessage();
 
         Assert.assertTrue(messsage.contains("You logged into a secure area!"));
         System.out.println("PASSED - Valid login with POM");
@@ -43,13 +35,13 @@ public class LoginPOMTest {
 
     @Test
     public void loginInvalidTest() throws InterruptedException {
-        loginpage.enterUsername("tomsmith");
-        loginpage.enterPassword("wrongpassword");
-        loginpage.clickLogin();
+        loginPage.enterUsername("tomsmith");
+        loginPage.enterPassword("wrongpassword");
+        loginPage.clickLogin();
         Thread.sleep(2000);
-        String message = loginpage.getFlashMessage();
+        String message = loginPage.getFlashMessage();
 
         Assert.assertTrue(message.contains("Your password is invalid"));
-        System.out.println("PASSED - Inalid login with POM");
+        System.out.println("PASSED - Invalid login with POM");
     }
 }
