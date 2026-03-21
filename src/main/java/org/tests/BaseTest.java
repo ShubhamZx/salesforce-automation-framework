@@ -3,6 +3,7 @@ package org.tests;
 import org.ScreenshotUtil;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.ITest;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -15,9 +16,10 @@ public class BaseTest {
     public WebDriver driver;
 
     @BeforeMethod
-    public void setup(){
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    public void setup() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("user-data-dir=/Users/shubhamzx/selenium-chrome-profile");
+        driver = new ChromeDriver(options);
     }
 
     @AfterMethod
