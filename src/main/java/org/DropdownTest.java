@@ -25,7 +25,7 @@ public class DropdownTest {
 
     @AfterMethod
     public void tearDown(){
-        driver.quit();
+        //driver.quit();
     }
 
     @Test
@@ -34,7 +34,7 @@ public class DropdownTest {
         dropdown.selectByVisibleText("Option 2");
         String selectedDropdownText = dropdown.getFirstSelectedOption().getText();
         System.out.println(selectedDropdownText);
-        Assert.assertTrue(selectedDropdownText.contains("Option 2"));
+        Assert.assertTrue(selectedDropdownText.contains("Option 1"));
 
 
     }
