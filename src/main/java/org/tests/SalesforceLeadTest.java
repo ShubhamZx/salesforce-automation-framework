@@ -48,6 +48,7 @@ public class SalesforceLeadTest extends BaseTest {
         System.out.println("Page title: " + driver.getTitle());
         Assert.assertTrue(driver.getTitle().contains("Shubham Sinha"));
         System.out.println("PASSED - Lead created successfully");
+        Assert.assertTrue(leadPage.isLeadPresentInListView("Shubham Sinha"), "Lead not found in list view");
     }
 
 }

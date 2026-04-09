@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 public class SalesforceLeadPage {
     WebDriver driver;
@@ -65,6 +66,14 @@ public class SalesforceLeadPage {
         Thread.sleep(1000);
         jsClick(saveButton);
         Thread.sleep(3000);
+    }
+
+    public boolean isLeadPresentInListView(String leadName) throws InterruptedException{
+        openLeadsModule();
+        Thread.sleep(4000);
+        wait.until(ExpectedConditions.titleContains("Lead"));
+        Boolean isLeadNamePresent = driver.getPageSource().contains(leadName);
+        return isLeadNamePresent;
     }
 }
 
