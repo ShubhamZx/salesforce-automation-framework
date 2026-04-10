@@ -7,8 +7,10 @@ import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.time.Duration;
 
 public class LoginTestNG {
@@ -30,7 +32,7 @@ public class LoginTestNG {
         driver.quit();
     }
 
-    @Test
+    //@Test
     public void validLoginTest() throws InterruptedException{
         driver.findElement(By.id("username")).sendKeys("tomsmith");
         driver.findElement(By.name("password")).sendKeys("SuperSecretPassword!");
@@ -49,7 +51,7 @@ public class LoginTestNG {
 
     }
 
-    @Test
+    //@Test
     public void invalidLoginTest() throws InterruptedException{
         driver.findElement(By.id("username")).sendKeys("tomsmith");
         driver.findElement(By.name("password")).sendKeys("wrong password!");
@@ -65,5 +67,41 @@ public class LoginTestNG {
 
         Assert.assertTrue(message.contains("Your password is invalid!"));
         System.out.println("PASSED - Invalid login");
+    }
+
+   // @DataProvider(name = "loginData")
+    public Object[][] getLoginData(){
+        return new Object[][] {
+                {"tomsmith", "SuperSecretPassword!", "You logged into a secure area!"},
+                {"wronguser", "wrongpass", "Your username is invalid!"}
+        };
+    }
+
+    //@Test(dataProvider = "loginData")
+    public void dataDriverLoginTest(String username, String password, String expectedMessage) throws InterruptedException{
+        driver.findElement(By.id("username")).sendKeys(username);
+        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.xpath("//*[@type='submit']")).click();
+        Thread.sleep(2000);
+        String message = driver.findElement(By.id("flash")).getText();
+        Assert.assertTrue(message.contains(expectedMessage));
+        System.out.println("PASSED - " + username + " : " + expectedMessage);
+    }
+
+    @DataProvider(name = "excelLoginData")
+    public Object[][] getExcelData() throws IOException {
+        return ExcelUtils.getTestData("testdata.xlsx", "Sheet1");
+    }
+
+    @Test(dataProvider = "excelLoginData")
+    public void excelDataDrivenTest(String username, String password, String expectedMessage)
+            throws InterruptedException {
+        driver.findElement(By.id("username")).sendKeys(username);
+        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.xpath("//*[@type='submit']")).click();
+        Thread.sleep(2000);
+        String message = driver.findElement(By.id("flash")).getText();
+        Assert.assertTrue(message.contains(expectedMessage));
+        System.out.println("PASSED - Excel: " + username);
     }
 }
