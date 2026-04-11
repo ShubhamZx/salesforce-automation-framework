@@ -8,6 +8,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Method;
 import java.time.Duration;
 
 public class LoginPOMTest extends BaseTest{
@@ -15,7 +16,8 @@ public class LoginPOMTest extends BaseTest{
     LoginPage loginPage;
 
     @BeforeMethod
-    public void navigateToLogin(){
+    public void navigateToLogin(Method method){
+        test = extent.createTest(method.getName());
         driver.get("https://the-internet.herokuapp.com/login");
         loginPage = new LoginPage(driver);
     }
